@@ -3,8 +3,11 @@ var CONFIG = require('../config');
 function LibraryObject(table, data)
 {
     this.table = "`" + CONFIG.database.library.database_name + "`.`" + table + "`";
-    this.id = data.id ? data.id : null;
-    this.data = data.id ? this.load(this.id) : data;
+    if(data)
+    {
+        this.id = data.id ? data.id : null;
+        this.data = data;
+    }
 }
 
 LibraryObject.prototype = {
@@ -59,7 +62,7 @@ LibraryObject.prototype = {
         });
     },
 
-    load: function (objectId, callback)
+    load: function (callback)
     {
         var libraryObject = this;
         CONFIG.database.library.connection_pool.getConnection(function (err, connection)
@@ -76,8 +79,8 @@ LibraryObject.prototype = {
                 callback(err, {"error": true, "code": 100, "status": "Error on LibraryObject.load()..."});
             });
 
-            console.log("Loading LibraryObject: " + objectId);
-            connection.query("SELECT * FROM " + libraryObject.table + " WHERE `id` = " + connection.escape(objectId),
+            console.log("Loading LibraryObject: " + libraryObject.id);
+            connection.query("SELECT * FROM " + libraryObject.table + " WHERE `id` = " + libraryObject.id,
                 function (err, rows)
                 {
                     connection.release();
@@ -87,7 +90,10 @@ LibraryObject.prototype = {
                     }
                     else
                     {
-                        callback(null, rows);
+                        if(rows.length > 0)
+                            callback(null, rows[0]);
+                        else
+                            callback(404, {"code": 404, "status": "Result not found!"})
                     }
                 }
             );

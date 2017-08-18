@@ -35,19 +35,59 @@ module.exports = function (app, root_path)
         return result;
     }
 
-    // returns spells by filter
-    app.get(local_root + '/filter', function (req, res)
+    // returns spells by id
+    app.get(local_root + '/:id', function (req, res)
     {
-        res.json(
+        var lock = req.headers.lock ? req.headers.lock : null;
+        var spell = new Spell({ id: req.params.id });
+        spell.load(function(err, data)
+        {
+            if(err == 404)
             {
-                message: 'Spellbook open'
-            });
+                res.status(404).json(data);
+            }
+            else if(err)
+            {
+                res.status(500).json({"error": err });
+            }
+            else
+            {
+                data.field_key = decrypt(data.field_key, lock);
+                data.field_value = decrypt(data.field_value, lock);
+                res.status(200).json(data);
+            }
+        })
+    });
+
+    // returns spells by filter
+    app.get(local_root + '/filter/:filter', function (req, res)
+    {
+        var lock = req.headers.lock ? req.headers.lock : null;
+        var filter = req.params.filter;
+        var spell = new Spell(null);
+
+        spell.filter(filter, function(err, data)
+        {
+            if(err)
+            {
+                res.status(500).json({"error": err });
+            }
+            else
+            {
+                for(i = 0; i < data.length; i++)
+                {
+                    data[i].field_key = decrypt(data[i].field_key, lock);
+                    data[i].field_value = decrypt(data[i].field_value, lock);
+                }
+                res.status(200).json(data);
+            }
+        })
     });
 
     app.post(local_root, function (req, res)
     {
 
-        var lock = req.body.lock;
+        var lock = req.headers.lock;
         var spell = new Spell({
             field_key: encrypt(req.body.field_key, lock),
             field_value: encrypt(req.body.field_value, lock),
