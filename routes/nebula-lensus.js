@@ -6,53 +6,33 @@
  *              <0>     The iNBETWEEN    <0>                *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
 
-var fs = require('fs');
-var uuidv1 = require('uuid/v1');
 var crypto = require('crypto');
 var CONFIG = require('../config');
-algorithm = 'aes-256-ctr'
+
+var Spell = require('../models/spell');
 
 module.exports = function (app, root_path)
 {
     const local_root = root_path + '/nebula-lensus';
-    var database = 'library';
 
-    function encrypt(buffer, key)
+    function encrypt(input, key)
     {
         key = key == null ? CONFIG.library.public_key : key;
-        var cipher = crypto.createCipher(algorithm, key);
-        return Buffer.concat([cipher.update(buffer), cipher.final()]);
+        var cipher = crypto.createCipher(CONFIG.library.algorithm, key);
+        var result = cipher.update(input, 'utf8', 'base64');
+        result += cipher.final('base64');
+
+        return result;
     }
 
-    function decrypt(buffer, key)
+    function decrypt(input, key)
     {
         key = key == null ? CONFIG.library.public_key : key;
-        var decipher = crypto.createDecipher(algorithm, key);
-        return Buffer.concat([decipher.update(buffer), decipher.final()]);
-    }
+        var decipher = crypto.createDecipher(CONFIG.library.algorithm, key);
+        var result = decipher.update(input, 'base64', 'utf8');
+        result += decipher.final('utf8');
 
-    function encrypt_spell(spell)
-    {
-        return {
-            _id: spell._id,
-            key: encrypt(spell.key, null),
-            value: encrypt(spell.value, null),
-            filter: spell.filter,
-            timestamp: spell.timestamp,
-            locked: spell.locked
-        }
-    }
-
-    function decrypt_spell(spell)
-    {
-        return {
-            _id: spell._id,
-            key: decrypt(spell.key, null),
-            value: decrypt(spell.value, null),
-            filter: spell.filter,
-            timestamp: spell.timestamp,
-            locked: spell.locked
-        }
+        return result;
     }
 
     // returns spells by filter
@@ -66,17 +46,26 @@ module.exports = function (app, root_path)
 
     app.post(local_root, function (req, res)
     {
-        var lock = req.body.lock;
-        var dataObject = encrypt_spell(
-            {
-                _id: uuidv1(),
-                key: req.body.key,
-                value: req.body.value,
-                filter: req.body.filter,
-                timestamp: new Date(),
-                locked: lock == null ? false : true
-            }, lock);
 
-        res.status(200).json(decrypt_spell(dataObject));
+        var lock = req.body.lock;
+        var spell = new Spell({
+            field_key: encrypt(req.body.field_key, lock),
+            field_value: encrypt(req.body.field_value, lock),
+            filter: req.body.filter,
+            locked: lock != null
+        });
+
+        spell.save(function (err, data)
+        {
+            if (err)
+            {
+                res.status(500).json({"error": err});
+            }
+
+            res.status(200).json({
+                "message": "Spell Successfully inserted",
+                "spell": data
+            });
+        });
     });
 };
