@@ -1,7 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * *  *
  * ROUTE: nebula-lensus .js                                 *
  * This route is used to insert encrypted entries into the  *
- * magic library database.                                  *
+ * library database                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  *
  *              <0>     The iNBETWEEN    <0>                *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
@@ -9,7 +9,7 @@
 var crypto = require('crypto');
 var CONFIG = require('../config');
 
-var Spell = require('../models/spell');
+var Book = require('../models/book');
 
 module.exports = function (app, root_path)
 {
@@ -35,12 +35,12 @@ module.exports = function (app, root_path)
         return result;
     }
 
-    // returns spells by id
+    // returns books by id
     app.get(local_root + '/:id', function (req, res)
     {
         var lock = req.headers.lock ? req.headers.lock : null;
-        var spell = new Spell({ id: req.params.id });
-        spell.load(function(err, data)
+        var book = new Book({ id: req.params.id });
+        book.load(function(err, data)
         {
             if(err == 404)
             {
@@ -59,14 +59,14 @@ module.exports = function (app, root_path)
         })
     });
 
-    // returns spells by filter
+    // returns books by filter
     app.get(local_root + '/filter/:filter', function (req, res)
     {
         var lock = req.headers.lock ? req.headers.lock : null;
         var filter = req.params.filter;
-        var spell = new Spell(null);
+        var book = new Book(null);
 
-        spell.filter(filter, function(err, data)
+        book.filter(filter, function(err, data)
         {
             if(err)
             {
@@ -88,14 +88,14 @@ module.exports = function (app, root_path)
     {
 
         var lock = req.headers.lock;
-        var spell = new Spell({
+        var book = new Book({
             field_key: encrypt(req.body.field_key, lock),
             field_value: encrypt(req.body.field_value, lock),
             filter: req.body.filter,
             locked: lock != null
         });
 
-        spell.save(function (err, data)
+        book.save(function (err, data)
         {
             if (err)
             {
@@ -103,8 +103,8 @@ module.exports = function (app, root_path)
             }
 
             res.status(200).json({
-                "message": "Spell Successfully inserted",
-                "spell": data
+                "message": "Book Successfully inserted",
+                "book": data
             });
         });
     });

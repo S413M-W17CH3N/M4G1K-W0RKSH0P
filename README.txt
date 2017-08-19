@@ -18,4 +18,5 @@
 
 
 ---------------------------------- page 1 --------------------------------------
-We have the world's attention now, there's nothing we cannot do.            1/1
+
+Change the world, kid. there's nothing we can't do.                        1/1

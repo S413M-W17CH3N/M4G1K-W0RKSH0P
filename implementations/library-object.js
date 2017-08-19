@@ -1,3 +1,12 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * *  *
+ * ROUTE: library-object.js                                 *
+ * This object is a persistance manager. It is used to      *
+ * manage the state of database models for the library DB.  *
+ *                                                          *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  *
+ *              <0>     The iNBETWEEN    <0>                *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
+
 var CONFIG = require('../config');
 
 function LibraryObject(table, data)
@@ -23,7 +32,6 @@ LibraryObject.prototype = {
 
             connection.on('error', function (err)
             {
-                console.log(err);
                 callback(err, {"code": 100, "status": "Error on LibraryObject.save()..."});
             });
 
@@ -79,7 +87,6 @@ LibraryObject.prototype = {
                 callback(err, {"error": true, "code": 100, "status": "Error on LibraryObject.load()..."});
             });
 
-            console.log("Loading LibraryObject: " + libraryObject.id);
             connection.query("SELECT * FROM " + libraryObject.table + " WHERE `id` = " + libraryObject.id,
                 function (err, rows)
                 {
@@ -117,7 +124,6 @@ LibraryObject.prototype = {
                 callback(err, {"code": 100, "status": "Error on LibraryObject.delete()..."});
             });
 
-            console.log("Deleting LibraryObject: " + libraryObject.id);
             connection.query("DELETE FROM " + libraryObject.table + " WHERE `id` = " + connection.escape(libraryObject.id),
                 function (err, results, fields)
                 {

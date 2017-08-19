@@ -1,9 +1,17 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * *  *
+ * ROUTE: app.js                                            *
+ * The main method to be run when the application starts    *
+ * Includes basic application setup and route defining.     *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  *
+ *              <0>     The iNBETWEEN    <0>                *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
+
 const path = require('path');
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 
-const ROOT_PATH = '/spellbook';
+const ROOT_PATH = '';
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());

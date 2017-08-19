@@ -7,8 +7,6 @@
  *              <0>     The iNBETWEEN    <0>                *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
 
-var fs = require('fs');
-var uuidv1 = require('uuid/v1');
 var crypto = require('crypto');
 
 module.exports = function (app, root_path)
