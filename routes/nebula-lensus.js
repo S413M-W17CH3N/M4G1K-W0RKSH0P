@@ -39,16 +39,16 @@ module.exports = function (app, root_path)
     app.get(local_root + '/:id', function (req, res)
     {
         var lock = req.headers.lock ? req.headers.lock : null;
-        var book = new Book({ id: req.params.id });
-        book.load(function(err, data)
+        var book = new Book({id: req.params.id});
+        book.load(function (err, data)
         {
-            if(err == 404)
+            if (err == 404)
             {
                 res.status(404).json(data);
             }
-            else if(err)
+            else if (err)
             {
-                res.status(500).json({"error": err });
+                res.status(500).json({"error": err});
             }
             else
             {
@@ -66,15 +66,15 @@ module.exports = function (app, root_path)
         var filter = req.params.filter;
         var book = new Book(null);
 
-        book.filter(filter, function(err, data)
+        book.filter(filter, function (err, data)
         {
-            if(err)
+            if (err)
             {
-                res.status(500).json({"error": err });
+                res.status(500).json({"error": err});
             }
             else
             {
-                for(i = 0; i < data.length; i++)
+                for (i = 0; i < data.length; i++)
                 {
                     data[i].field_key = decrypt(data[i].field_key, lock);
                     data[i].field_value = decrypt(data[i].field_value, lock);
@@ -87,7 +87,7 @@ module.exports = function (app, root_path)
     app.post(local_root, function (req, res)
     {
 
-        var lock = req.headers.lock;
+        var lock = req.headers.lock ? req.headers.lock : null;
         var book = new Book({
             field_key: encrypt(req.body.field_key, lock),
             field_value: encrypt(req.body.field_value, lock),

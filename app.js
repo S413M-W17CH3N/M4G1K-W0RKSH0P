@@ -6,9 +6,9 @@
  *              <0>     The iNBETWEEN    <0>                *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
 
-const path = require('path');
+const path  = require('path');
 var express = require('express');
-var app = express();
+var app     = express();
 var bodyParser = require('body-parser');
 
 const ROOT_PATH = '';
