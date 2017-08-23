@@ -10,19 +10,16 @@
                \ \_/ / |     | |  | | | | | |_\ \_| |_| \__/\          
                 \___/\_|     \_|  |_|_| |_/\____/\___/ \____/          
                                                                   
-                                                                  
                                             Author: ◄̷̧͜͡ S̶A̷͢1E͠͏͟M Ẁ1̶T̸̛͘C̨̨H̛3͝͠N̵►
-
-=============------------------------------------------------------=============
-[seg.0]
-Table of Contents
-    seg.1: A short overview of the application
-    seg.2: A List of tools in Salem's Book of Magic
-        seg.2-1: An example of G14SS-3Y3 which also explains the usage of the workload cluster.
-    seg.3: End Points and Requests
-
-[seg.1]
-What is Salem's Book of Magic?
+# Salem's Book of Magic
+## Table Of Contents
+1. A short overview of the application
+2. A List of tools in Salem's Book of Magic
+	1. An example of G14SS-3Y3 which also explains the usage of the workload cluster.
+3. End Points and Requests
+---
+## Segment 1
+### What is Salem's Book of Magic?
 
 Salem's Book of Magic is a collection of Security Pen-Testing tools developed for
 educational purpose. I will not be held liable for the use of this repository.
@@ -34,18 +31,18 @@ There are a few endpoints available. For the examples throughout this documentat
 I will be using http://workbench.salems.world/ as the root api path url, if you host
 this api, for obvious reasons, your root api url will be different.
 
-To users of this software suite:
-    This tool suite is in very early development, I'm currently focusing on getting
+#### To users of this software suite:
+	This tool suite is in very early development, I'm currently focusing on getting
     the core of the suite working. This core includes the API, the library database,
     and the API's Spellbook. Other features planned in this software include various
     rootkits for IOS, Linux, Windows, Android, and iPhone, as well as a "man-in-the-middle"
     DNS service which can be used with the Raspberry Pi.
 
-If you're wondering why the code has interesting naming conventions (and why it might not be the cleanest code),
-I was not sober when writing the original version of this library. I plan to go in and refactor it so it's more
-open-source friendly. That being said, the code is far from unreadable, it's just interesting...
+	If you're wondering why the code has interesting naming conventions (and why it might not be the cleanest code),
+	I was not sober when writing the original version of this library. I plan to go in and refactor it so it's more
+	open-source friendly. That being said, the code is far from unreadable, it's just interesting...
 
-If you wish to contribute to this library:
+#### If you wish to contribute to this library:
     If you're interested in helping with this library, pull requests are acceptable.
     Here is a list of things that anyone can do to help with the development of this
     tool suite:
@@ -78,10 +75,11 @@ If you wish to contribute to this library:
                 Please note the rootkits will also update DNS settings to hit the mitm
                 so, this is believe it or not, a huge part of this repository.
 
-
-[seg.2]
+## Segment 2
 The repos in this suite (up-to-date as of 2017-08-23) include:
-M4G1K W0RKB3NCH (REST Service):
+
+#### M4G1K W0RKB3NCH (REST Service):
+
     Desc: Magic Workbench (M4G1K-W0RKB3NCH), is the center of Salem's Book of Magic.
           This repository includes routes to various services used by Salem's Book of Magic.
     Routes:
@@ -90,7 +88,8 @@ M4G1K W0RKB3NCH (REST Service):
         - /nebula-lensus/ (Persistence manager that interacts with the Library of Magic)
         - /spellbook/ (Used to cron and user tasks to the "malware-cluster".) (in development)
 
-Great Library of Magic History (Library Database) (Not yet public)
+#### Great Library of Magic History (Library Database) (Not yet public)
+
     Desc: The Great Library of Magic History handles encrypted data. It has a basic
             Data layout which simply takes in Strings, field_keys, field_values, and
             filter. The filter lets your sort through data. All data sent to this
@@ -105,7 +104,7 @@ Great Library of Magic History (Library Database) (Not yet public)
     Tables:
         - library (stores encrypted generic data rows)
 
-foxy-haystack (A collection of various Phishing pages)(In the works, accepting PRs)
+#### foxy-haystack (Fake Pages)
     Desc: foxy-haystack is a collection of various website clones. These clones communicate
             with M4G1K-W0RKB3NCH/nebula-lensus/ to create new entries in the great library.
             All of these pages should include a config.php which allows you to input a custom
@@ -114,8 +113,7 @@ foxy-haystack (A collection of various Phishing pages)(In the works, accepting P
         - facebook
         - snapchat (not yet public)
 
-B14CK-M1RR0R (A mirror services, enables easy duplication of an instance of Salem's
-                Book Of Magic) (Currently In Development)
+#### B14CK-M1RR0R (Currently In Development)
     Desc:
         B14CK-M1RR0R (Black Mirror) is an optional service that allows API users to clone
         and create new nodes Salem's Book of M4G1K. This means, if one node gets taken down
@@ -129,8 +127,8 @@ B14CK-M1RR0R (A mirror services, enables easy duplication of an instance of Sale
         take a good chunk of my time to complete, if you would like to help this repository
         build faster, please take a look at the tasklist at the top of the page.
 
-G14SS-3Y3 (R007k17 for windows) (Not yet in development)
-    [seg.2-1][About Rootkits and the cluster]
+##### Segment 2.1: About Rootkits and the cluster
+#### G14SS-3Y3 (Not yet in development)
     Desc:
         As for all the R007K175 in Salem's Book of magic, the job of the G14SS-3Y3 is to
         add an infected device to workload cluster. This workload cluster allows us to
@@ -147,9 +145,10 @@ G14SS-3Y3 (R007k17 for windows) (Not yet in development)
 
         Note: There will be a few other repositories that do this same functionality
               but for different operating systems.
-
-[seg.3]
-M4G1K-W0RKB3NCH Endpoints and requests:
+---
+## Segment 3: 
+### M4G1K-W0RKB3NCH Endpoints and requests:
+#### nebula-lensus, POST
     Route: http://workbench.salems.world/nebula-lensus/
         Method: POST
         Desc: Adds an encrypted entry to the library database.
@@ -186,6 +185,7 @@ M4G1K-W0RKB3NCH Endpoints and requests:
         Notes:
             The data that is passed from nebula-lensus to the library is referred to as a "book".
 
+#### nebula-lensus/filter/{filter}, GET
     Route: http://www.salems.world/nebula-lensus/filter/{filter}
         Method: GET
         Desc: Reads all encrypted entries defined by a given filter.
@@ -213,6 +213,7 @@ M4G1K-W0RKB3NCH Endpoints and requests:
         Notes:
             The data that is passed from nebula-lensus to the library (and vice versa) is referred to as a "book".
 
+#### nebula-lensus/{id}, GET
     Route: http://www.salems.world/nebula-lensus/{id}
         Method: GET
         Desc: Reads an encrypted entry from the library database.
@@ -240,6 +241,7 @@ M4G1K-W0RKB3NCH Endpoints and requests:
         Notes:
             The data that is passed from nebula-lensus to the library (and vice versa) is referred to as a "book".
 
+#### magic-gateway/keysmith
     Route: http://www.salems.world/magic-gateway/keysmith
         Method: GET
         Desc: Generates a 512 Character Encryption Key
