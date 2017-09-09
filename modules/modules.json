@@ -1,0 +1,20 @@
+[
+  {
+    "name": "chaos-apple",
+    "root_route": "/chaos-apple",
+    "root_dir": "/chaos-apple",
+    "mod_module": "chaos-apple",
+    "version": "1.0.0",
+    "authors": [
+      {
+        "name": "Salem Witchen",
+        "links": []
+      },
+      {
+        "name": "iNBETWEEN Enterprises",
+        "links": []
+      }
+    ],
+    "description": "Backend service for Apple of Eris"
+  }
+]

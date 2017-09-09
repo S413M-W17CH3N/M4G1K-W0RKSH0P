@@ -1,10 +1,10 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * *  *
- * ROUTE: library-object.js                                 *
+ * IMPL: library-object.js                                  *
  * This object is a persistance manager. It is used to      *
  * manage the state of database models for the library DB.  *
  *                                                          *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  *
- *              <0>     The iNBETWEEN    <0>                *
+ *      <0>     iNBETWEEN ENTERPRISES    <0>                *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
 
 var CONFIG = require('../config');
@@ -12,7 +12,7 @@ var CONFIG = require('../config');
 function LibraryObject(table, data)
 {
     this.table = "`" + CONFIG.database.library.database_name + "`.`" + table + "`";
-    if(data)
+    if (data)
     {
         this.id = data.id ? data.id : null;
         this.data = data;
@@ -53,7 +53,8 @@ LibraryObject.prototype = {
             }
             else // We preform an update
             {
-                connection.query("UPDATE " + libraryObject.table + " SET ? WHERE `id` = ?", [libraryObject.data, libraryObject.id],
+                connection.query("UPDATE " + libraryObject.table + " SET ? WHERE `id` = ?",
+                    [libraryObject.data, libraryObject.id],
                     function (err, results, fields)
                     {
                         if (err)
@@ -97,10 +98,14 @@ LibraryObject.prototype = {
                     }
                     else
                     {
-                        if(rows.length > 0)
+                        if (rows.length > 0)
+                        {
                             callback(null, rows[0]);
+                        }
                         else
+                        {
                             callback(404, {"code": 404, "status": "Result not found!"})
+                        }
                     }
                 }
             );
@@ -124,7 +129,8 @@ LibraryObject.prototype = {
                 callback(err, {"code": 100, "status": "Error on LibraryObject.delete()..."});
             });
 
-            connection.query("DELETE FROM " + libraryObject.table + " WHERE `id` = " + connection.escape(libraryObject.id),
+            connection.query("DELETE FROM " + libraryObject.table + " WHERE `id` = " + connection.escape(
+                libraryObject.id),
                 function (err, results, fields)
                 {
                     connection.release();

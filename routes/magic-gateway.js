@@ -21,7 +21,7 @@ module.exports = function (app, root_path)
         res.status(201).json(
             {
                 "message": "Here is your magic key, please keep it in a safe place, we do not keep spares.",
-                "key": generated_key
+                "key":     generated_key
             });
     });
 }

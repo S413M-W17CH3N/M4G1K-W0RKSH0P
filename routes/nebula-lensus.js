@@ -17,7 +17,7 @@ module.exports = function (app, root_path)
 
     function encrypt(input, key)
     {
-        key = key == null ? CONFIG.library.public_key : key;
+        key        = key == null ? CONFIG.library.public_key : key;
         var cipher = crypto.createCipher(CONFIG.library.algorithm, key);
         var result = cipher.update(input, 'utf8', 'base64');
         result += cipher.final('base64');
@@ -27,9 +27,9 @@ module.exports = function (app, root_path)
 
     function decrypt(input, key)
     {
-        key = key == null ? CONFIG.library.public_key : key;
+        key          = key == null ? CONFIG.library.public_key : key;
         var decipher = crypto.createDecipher(CONFIG.library.algorithm, key);
-        var result = decipher.update(input, 'base64', 'utf8');
+        var result   = decipher.update(input, 'base64', 'utf8');
         result += decipher.final('utf8');
 
         return result;
@@ -52,7 +52,7 @@ module.exports = function (app, root_path)
             }
             else
             {
-                data.field_key = decrypt(data.field_key, lock);
+                data.field_key   = decrypt(data.field_key, lock);
                 data.field_value = decrypt(data.field_value, lock);
                 res.status(200).json(data);
             }
@@ -62,9 +62,9 @@ module.exports = function (app, root_path)
     // returns books by filter
     app.get(local_root + '/filter/:filter', function (req, res)
     {
-        var lock = req.headers.lock ? req.headers.lock : null;
+        var lock   = req.headers.lock ? req.headers.lock : null;
         var filter = req.params.filter;
-        var book = new Book(null);
+        var book   = new Book(null);
 
         book.filter(filter, function (err, data)
         {
@@ -76,7 +76,7 @@ module.exports = function (app, root_path)
             {
                 for (i = 0; i < data.length; i++)
                 {
-                    data[i].field_key = decrypt(data[i].field_key, lock);
+                    data[i].field_key   = decrypt(data[i].field_key, lock);
                     data[i].field_value = decrypt(data[i].field_value, lock);
                 }
                 res.status(200).json(data);
@@ -89,10 +89,10 @@ module.exports = function (app, root_path)
 
         var lock = req.headers.lock ? req.headers.lock : null;
         var book = new Book({
-            field_key: encrypt(req.body.field_key, lock),
+            field_key:   encrypt(req.body.field_key, lock),
             field_value: encrypt(req.body.field_value, lock),
-            filter: req.body.filter,
-            locked: lock != null
+            filter:      req.body.filter,
+            locked:      lock != null
         });
 
         book.save(function (err, data)
@@ -104,7 +104,7 @@ module.exports = function (app, root_path)
 
             res.status(200).json({
                 "message": "Book Successfully inserted",
-                "book": data
+                "book":    data
             });
         });
     });
